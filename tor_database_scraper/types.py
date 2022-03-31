@@ -32,5 +32,6 @@ class Transcription(TypedDict):
     url: Optional[str]
     submission: int
     author: int
-    text: str
     removed_from_reddit: bool
+    post_type: str
+    text: Optional[str]

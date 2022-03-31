@@ -3,6 +3,7 @@ from typing import Optional
 import pytz
 
 from tor_database_scraper.types import Volunteer, Submission, Transcription
+from tor_database_scraper.utils import get_simplified_post_type
 
 
 def _parse_datetime(time: Optional[datetime]) -> Optional[str]:
@@ -58,7 +59,7 @@ def parse_transcription(
     submission: int,
     author: int,
     removed_from_reddit: bool,
-    text: str,
+    text: Optional[str],
 ) -> Transcription:
     return {
         "id": t_id,
@@ -67,5 +68,6 @@ def parse_transcription(
         "submission": submission,
         "author": author,
         "removed_from_reddit": removed_from_reddit,
+        "post_type": get_simplified_post_type(text),
         "text": text,
     }
