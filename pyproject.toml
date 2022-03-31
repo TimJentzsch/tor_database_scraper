@@ -6,6 +6,8 @@ authors = ["Tim Jentzsch <tim-jentzsch@gmx.de>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
+psycopg2 = "^2.9.3"
+toml = "^0.10.2"
 
 [tool.poetry.dev-dependencies]
 

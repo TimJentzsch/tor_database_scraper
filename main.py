@@ -1,16 +1,39 @@
-# This is a sample Python script.
-
-# Press Ctrl+F5 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+import psycopg2
+import toml
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press F9 to toggle the breakpoint.
+def tor_database_scraper(config):
+    postgres_cfg = config.get("postgres", {})
+    conn = psycopg2.connect(**postgres_cfg)
+
+    with conn.cursor() as cur:
+        cur.execute("SELECT version()")
+        print(cur.fetchone())
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+def main():
+    try:
+        config = toml.load("config.toml")
+    except FileNotFoundError:
+        print(
+            "Config file not found!\n"
+            "Please create a `config.toml` in the root folder."
+        )
+        exit(1)
+        return
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    postgres_cfg = config.get("postgres", {})
+
+    if not postgres_cfg:
+        print(
+            "Postgres data not configured!\n"
+            "Please specify `host`, `database` and `user` under `postgres`."
+        )
+        exit(1)
+        return
+
+    tor_database_scraper(config)
+
+
+if __name__ == "__main__":
+    main()
