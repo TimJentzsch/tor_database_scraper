@@ -5,7 +5,11 @@ from typing import Dict, Any
 import psycopg2
 
 from tor_database_scraper.parsers import parse_volunteer
-from tor_database_scraper.scrapers import scrape_users, scrape_volunteers
+from tor_database_scraper.scrapers import (
+    scrape_users,
+    scrape_volunteers,
+    scrape_completed_submissions,
+)
 
 
 def _dump(obj: Any, name: str):
@@ -20,3 +24,4 @@ def scrape_db(postgres_cfg: Dict):
     with psycopg2.connect(**postgres_cfg) as connection:
         _dump(scrape_users(connection), "users")
         _dump(scrape_volunteers(connection), "volunteers")
+        _dump(scrape_completed_submissions(connection), "completed_submission")

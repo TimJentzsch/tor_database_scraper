@@ -1,7 +1,8 @@
 from typing import List
 
 from tor_database_scraper import parse_volunteer
-from tor_database_scraper.types import Volunteer
+from tor_database_scraper.parsers import parse_submission
+from tor_database_scraper.types import Volunteer, Submission
 
 
 def scrape_users(connection) -> List[Volunteer]:
@@ -40,3 +41,19 @@ def scrape_volunteers(connection) -> List[Volunteer]:
         )
 
         return [parse_volunteer(*row) for row in cursor.fetchall()]
+
+
+def scrape_completed_submissions(connection) -> List[Submission]:
+    with connection.cursor() as cursor:
+        cursor.execute(
+            """
+            SELECT s.id, s.create_time, s.url, s.tor_url, s.content_url,
+                s.title, s.nsfw, s.removed_from_queue,
+                s.claimed_by_id, s.claim_time, s.completed_by_id, s.complete_time
+            FROM api_submission s
+            WHERE s.completed_by_id IS NOT NULL
+            ORDER BY s.create_time;
+            """
+        )
+
+        return [parse_submission(*row) for row in cursor.fetchall()]
