@@ -3,7 +3,7 @@ from typing import Optional
 import pytz
 
 from tor_database_scraper.types import Volunteer, Submission, Transcription
-from tor_database_scraper.utils import get_simplified_post_type
+from tor_database_scraper.utils import get_simplified_post_type, extract_subreddit
 
 
 def _parse_datetime(time: Optional[datetime]) -> Optional[str]:
@@ -44,6 +44,7 @@ def parse_submission(
         "url": url,
         "tor_url": tor_url,
         "content_url": content_url,
+        "subreddit": extract_subreddit(url),
         "title": title,
         "nsfw": nsfw,
         "removed_from_queue": removed_from_queue,

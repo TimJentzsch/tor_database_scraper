@@ -66,3 +66,15 @@ def get_simplified_post_type(text: Optional[str]) -> str:
                 return simple_type
 
     return post_type
+
+
+def extract_subreddit(url: Optional[str]) -> Optional[str]:
+    if url is None or "reddit.com" not in url:
+        return None
+
+    parts = url.split("/")
+
+    if len(parts) < 5:
+        return None
+
+    return parts[4]

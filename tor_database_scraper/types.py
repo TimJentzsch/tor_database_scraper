@@ -21,6 +21,7 @@ class Submission(TypedDict):
     url: Optional[str]
     tor_url: Optional[str]
     content_url: Optional[str]
+    subreddit: Optional[str]
     transcription_set: List[int]
     removed_from_queue: bool
     is_dummy: bool
