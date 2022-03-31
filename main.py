@@ -1,14 +1,6 @@
-import psycopg2
 import toml
 
-
-def tor_database_scraper(config):
-    postgres_cfg = config.get("postgres", {})
-    conn = psycopg2.connect(**postgres_cfg)
-
-    with conn.cursor() as cur:
-        cur.execute("SELECT version()")
-        print(cur.fetchone())
+from tor_database_scraper import scrape_db
 
 
 def main():
@@ -32,7 +24,8 @@ def main():
         exit(1)
         return
 
-    tor_database_scraper(config)
+    postgres_cfg = config.get("postgres", {})
+    scrape_db(postgres_cfg)
 
 
 if __name__ == "__main__":
