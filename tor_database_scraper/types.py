@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import TypedDict, Optional, List
 
 
@@ -24,6 +23,7 @@ class Submission(TypedDict):
     content_url: Optional[str]
     transcription_set: List[int]
     removed_from_queue: bool
+    is_dummy: bool
 
 
 class Transcription(TypedDict):
@@ -35,3 +35,4 @@ class Transcription(TypedDict):
     removed_from_reddit: bool
     post_type: str
     text: Optional[str]
+    is_dummy: bool

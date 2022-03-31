@@ -36,6 +36,8 @@ def parse_submission(
     completed_by: Optional[int],
     complete_time: Optional[datetime],
 ) -> Submission:
+    is_dummy = url is None or tor_url is None or content_url is None
+
     return {
         "id": s_id,
         "create_time": _parse_datetime(create_time),
@@ -49,6 +51,7 @@ def parse_submission(
         "claim_time": _parse_datetime(claim_time),
         "completed_by": completed_by,
         "complete_time": _parse_datetime(complete_time),
+        "is_dummy": is_dummy,
     }
 
 
@@ -61,6 +64,8 @@ def parse_transcription(
     removed_from_reddit: bool,
     text: Optional[str],
 ) -> Transcription:
+    is_dummy = url is None or text is None
+
     return {
         "id": t_id,
         "create_time": _parse_datetime(create_time),
@@ -70,4 +75,5 @@ def parse_transcription(
         "removed_from_reddit": removed_from_reddit,
         "post_type": get_simplified_post_type(text),
         "text": text,
+        "is_dummy": is_dummy,
     }
