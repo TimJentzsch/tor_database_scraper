@@ -1,7 +1,10 @@
+from typing import List
+
 from tor_database_scraper import parse_volunteer
+from tor_database_scraper.types import Volunteer
 
 
-def scrape_volunteers(connection):
+def scrape_volunteers(connection) -> List[Volunteer]:
     with connection.cursor() as cursor:
         cursor.execute(
             """
@@ -12,10 +15,14 @@ def scrape_volunteers(connection):
                 WHERE completed_by_id IS NOT NULL
                 GROUP BY completed_by_id
             ) as g ON u.id = g.completed_by_id
-            WHERE u.id = 4034
+            ORDER BY u.date_joined;
             """
         )
 
-        for row in [cursor.fetchone()]:
+        volunteers = []
+
+        for row in cursor.fetchall():
             volunteer = parse_volunteer(*row)
-            print(volunteer)
+            volunteers.append(volunteer)
+
+        return volunteers
