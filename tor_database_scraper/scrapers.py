@@ -1,8 +1,8 @@
 from typing import List
 
 from tor_database_scraper import parse_volunteer
-from tor_database_scraper.parsers import parse_submission
-from tor_database_scraper.types import Volunteer, Submission
+from tor_database_scraper.parsers import parse_submission, parse_transcription
+from tor_database_scraper.types import Volunteer, Submission, Transcription
 
 
 def scrape_users(connection) -> List[Volunteer]:
@@ -57,3 +57,19 @@ def scrape_completed_submissions(connection) -> List[Submission]:
         )
 
         return [parse_submission(*row) for row in cursor.fetchall()]
+
+
+def scrape_volunteer_transcriptions(connection) -> List[Transcription]:
+    with connection.cursor() as cursor:
+        cursor.execute(
+            """
+            SELECT t.id, t.create_time, t.url, t.submission_id, t.author_id, 
+                t.removed_from_reddit, t.text
+            FROM api_transcription AS t LEFT JOIN authentication_blossomuser AS u
+                ON t.author_id = u.id
+            WHERE u.is_bot = false
+            ORDER BY t.create_time;
+            """
+        )
+
+        return [parse_transcription(*row) for row in cursor.fetchall()]

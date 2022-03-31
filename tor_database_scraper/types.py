@@ -12,7 +12,7 @@ class Volunteer(TypedDict):
 
 class Submission(TypedDict):
     id: int
-    create_time: datetime
+    create_time: Optional[str]
     claimed_by: Optional[int]
     claim_time: Optional[str]
     completed_by: Optional[int]
@@ -28,9 +28,9 @@ class Submission(TypedDict):
 
 class Transcription(TypedDict):
     id: int
+    create_time: Optional[str]
+    url: Optional[str]
     submission: int
     author: int
-    create_time: str
-    url: Optional[str]
     text: str
     removed_from_reddit: bool
